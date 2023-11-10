@@ -25,32 +25,33 @@ export default function PostForm({ setAllPosts }) {
       setAllPosts((prev) => [...prev, newPost]);
       setValue('');
 
-      
       alert('УРА!');
     } catch (error) {
       console.error('Error in submitHandler:', error);
- 
     }
   };
 
   return (
-    <form onSubmit={submitHandler}>
-      <div className="mb-3">
-        <label htmlFor="exampleInputEmail1" className="form-label">
-          Введите свой текст
-          <input
-            name="title"
-            type="text"
-            className="form-control"
-            id="exampleInputEmail1"
-            aria-describedby="emailHelp"
-          />
-        </label>
-      </div>
+    <>
+      <h3 style={{ paddingTop: '3ch' }}>Задание №1 Запросы к серверу</h3>
+      <form onSubmit={submitHandler}>
+        <div className="mb-3">
+          <label htmlFor="exampleInputEmail1" className="form-label">
+            Введите свой текст
+            <input
+              name="title"
+              type="text"
+              className="form-control"
+              id="exampleInputEmail1"
+              aria-describedby="emailHelp"
+            />
+          </label>
+        </div>
 
-      <button type="submit" className="btn btn-primary" style={{ marginBottom: '5ch' }}>
-        Submit
-      </button>
-    </form>
+        <button type="submit" className="btn btn-primary" style={{ marginBottom: '5ch' }}>
+          Submit
+        </button>
+      </form>
+    </>
   );
 }

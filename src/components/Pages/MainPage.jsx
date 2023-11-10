@@ -1,9 +1,16 @@
 import React, { useState } from 'react';
 import axios from 'axios';
 import Table from 'react-bootstrap/Table';
-import { Col, Row, Modal, Button } from 'react-bootstrap';
+import { Col, Row, Button } from 'react-bootstrap';
 import Form from 'react-bootstrap/Form';
-import ModalEdit from '../UI/ModalEdit'; // Import your ModalEdit component
+import ModalEdit from '../UI/ModalEdit';
+import {
+  styleOuter,
+  innerContainer,
+  nestedContainer,
+  nestedContainer2,
+  nestedContainer3,
+} from '../../styles';
 
 function MainPage({ users, user }) {
   const [err, setErr] = useState(null);
@@ -38,6 +45,18 @@ function MainPage({ users, user }) {
       name: formData.get('name'),
       secondname: formData.get('secondname'),
     };
+    const isDuplicate = (newUserData) =>
+      tableData.some(
+        (user) =>
+          user.soname === newUserData.soname &&
+          user.name === newUserData.name &&
+          user.secondname === newUserData.secondname,
+      );
+    if (isDuplicate(data)) {
+      setErr('Пользователь с такими ФИО уже существует.');
+      alert('Пользователь с такими ФИО уже существует.');
+      return;
+    }
 
     try {
       const res = await axios.post('/api/tableform/new', data);
@@ -53,8 +72,9 @@ function MainPage({ users, user }) {
 
   return (
     <>
+      <h3 style={{paddingTop: '3ch'}}>Задание №2 Таблица клиентов</h3>
       <Form onSubmit={submitHandler}>
-      <Form.Group className="mb-3" controlId="formSoname">
+        <Form.Group className="mb-3" controlId="formSoname">
           <Form.Label>Фамилия</Form.Label>
           <Form.Control type="text" name="soname" placeholder="введите фамилию" />
         </Form.Group>
@@ -107,6 +127,7 @@ function MainPage({ users, user }) {
                   type="button"
                   variant="outline-primary"
                   onClick={() => deleteHandler(row.id)}
+                  style={{ marginLeft: '1ch' }}
                 >
                   Delete
                 </Button>
@@ -116,13 +137,22 @@ function MainPage({ users, user }) {
         </tbody>
       </Table>
 
-      {/* Edit Modal */}
       <ModalEdit
         show={isEditing}
         user={editUserData}
         handleClose={closeEditModal}
         setTableData={setTableData}
       />
+      <h3>Задание № 3</h3>
+      <div className="outer-container" style={styleOuter}>
+        <div className="inner-container" style={innerContainer}>
+          <div className="nested-container" style={nestedContainer}>
+            <div className="nested-container2" style={nestedContainer2}>
+              <div className="nested-container3" style={nestedContainer3}></div>
+            </div>
+          </div>
+        </div>
+      </div>
     </>
   );
 }
