@@ -4,7 +4,7 @@ import React from 'react';
 export default function PostList({ posts, setAllPosts }) {
   const deleteHandler = async (id) => {
     try {
-      // Use the DELETE method and specify headers for JSON
+     
       const response = await fetch(`/api/posts/delete/${id}`, {
         method: 'DELETE',
         headers: {

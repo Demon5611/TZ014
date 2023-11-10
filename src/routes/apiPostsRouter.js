@@ -1,5 +1,4 @@
 import express from 'express';
-import axios from 'axios';
 import { Post } from '../../db/models';
 
 const router = express.Router();
@@ -21,17 +20,6 @@ router.delete('/delete/:id', async (req, res) => {
   } catch (err) {
     console.error(err);
     res.sendStatus(500);
-  }
-});
-
-
-router.get('/tretyakovgallery', async (req, res) => {
-  try {
-    const response = await axios.get('https://www.tretyakovgallery.ru');
-    res.json(response.data);
-  } catch (error) {
-    console.error(error);
-    res.status(500).json({ error: 'Internal Server Error' });
   }
 });
 

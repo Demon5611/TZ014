@@ -29,7 +29,7 @@ export default function PostForm({ setAllPosts }) {
       alert('УРА!');
     } catch (error) {
       console.error('Error in submitHandler:', error);
-      // Handle the error as needed
+ 
     }
   };
 
