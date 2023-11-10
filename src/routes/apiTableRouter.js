@@ -23,7 +23,17 @@ apiTableRouter.post('/new', async (req, res) => {
 apiTableRouter.delete('/user/:id', async (req, res) => {
   await User.destroy({ where: { id: req.params.id } });
   res.sendStatus(200);
-  window.location.href = '/';
+
 });
+
+apiTableRouter.patch('/newtext/:id', async (req, res) =>{
+    const { soname, name, secondname } = req.body;
+    const updateUser = await User.findOne({ where: { id: req.params.id } });
+    updateUser.name = name;
+    updateUser.soname = soname;
+    updateUser.secondname = secondname;
+    updateUser.save();
+    res.sendStatus(200);
+  });
 
 export default apiTableRouter;

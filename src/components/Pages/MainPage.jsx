@@ -1,29 +1,33 @@
 import React, { useState } from 'react';
 import axios from 'axios';
 import Table from 'react-bootstrap/Table';
-import { Col, Row } from 'react-bootstrap';
-import Button from 'react-bootstrap/Button';
+import { Col, Row, Modal, Button } from 'react-bootstrap';
 import Form from 'react-bootstrap/Form';
+import ModalEdit from '../UI/ModalEdit'; // Import your ModalEdit component
 
 function MainPage({ users, user }) {
   const [err, setErr] = useState(null);
   const [tableData, setTableData] = useState(users);
+  const [isEditing, setIsEditing] = useState(false);
+  const [editUserData, setEditUserData] = useState({}); // Store edited user data
 
   const deleteHandler = async (id) => {
     try {
-      const response = await fetch(`/api/tableform/user/${id}`, {
-        method: 'DELETE',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-      });
-      if (!response.ok) {
-        throw new Error('Error deleting post');
-      }
+      await axios.delete(`/api/tableform/user/${id}`);
       setTableData((prev) => prev.filter((el) => el.id !== id));
     } catch (error) {
       console.error('Error in deleteHandler Users:', error);
     }
+  };
+
+  const openEditModal = (user) => {
+    setIsEditing(true);
+    setEditUserData(user);
+  };
+
+  const closeEditModal = () => {
+    setIsEditing(false);
+    setEditUserData({});
   };
 
   const submitHandler = async (e) => {
@@ -50,7 +54,7 @@ function MainPage({ users, user }) {
   return (
     <>
       <Form onSubmit={submitHandler}>
-        <Form.Group className="mb-3" controlId="formSoname">
+      <Form.Group className="mb-3" controlId="formSoname">
           <Form.Label>Фамилия</Form.Label>
           <Form.Control type="text" name="soname" placeholder="введите фамилию" />
         </Form.Group>
@@ -95,7 +99,7 @@ function MainPage({ users, user }) {
                 <Button
                   type="button"
                   variant="outline-secondary"
-                  // Other attributes and onClick handlers for the Edit button
+                  onClick={() => openEditModal(row)}
                 >
                   Edit
                 </Button>
@@ -111,6 +115,14 @@ function MainPage({ users, user }) {
           ))}
         </tbody>
       </Table>
+
+      {/* Edit Modal */}
+      <ModalEdit
+        show={isEditing}
+        user={editUserData}
+        handleClose={closeEditModal}
+        setTableData={setTableData}
+      />
     </>
   );
 }
